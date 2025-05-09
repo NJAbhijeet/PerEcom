@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Models\Vendor;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\VendorProducts;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class AdminHomeController extends Controller
 {
     public function index()
     {
-        return view('frontend.index');
+        $categories = Category::where('status', 'active') ->inRandomOrder()->take(4)->get();
+        $categoryIds = $categories->pluck('id'); 
+        $products = Product::whereIn('category_id', $categoryIds)->get();     
+        return view('frontend.index', compact('categories', 'products'));        
     }
 
     public function blog()
@@ -57,14 +65,45 @@ class AdminHomeController extends Controller
         return view('frontend.register');
     }
 
-    public function shop()
+    public function vendorregister(Request $request)
     {
-        return view('frontend.shop');
+        // dd($request->all());
+
+        $vendors = new Vendor();
+        $vendors->name = $request->name;
+        $vendors->email = $request->email;
+        $vendors->phone = $request->phone;
+        $vendors->gst = $request->gst;
+        $vendors->password = Hash::make($request->password);
+        $vendors->passwordhint = $request->password;
+
+        if ($vendors->save()) {
+            return back()->with('flash_success', 'Registered as a vendor');
+        } else {
+            return back()->with('flash_error', 'Registration failed');
+        }
     }
 
-    public function shopdetail()
+  
+
+
+
+    public function shop()
     {
-        return view('frontend.shop-detail');
+        $categories = Category::where('status', 'active')->get();
+        $categoryIds = $categories->pluck('id'); 
+        $products = Product::whereIn('category_id', $categoryIds)->get();
+        return view('frontend.shop', compact('categories', 'products'));
+        
+    }
+
+    public function shopdetail($slug)    
+    {
+        $product = Product::where('slug', $slug)->first();
+        $vendorProducts = VendorProducts::where('product_id', $product->id)
+        ->where('status', 'Active')
+        ->get();
+        return view('frontend.shop-detail', compact('product', 'vendorProducts'));
     }
 
     public function cart()
@@ -96,6 +135,4 @@ class AdminHomeController extends Controller
     {
         return view('frontend.forget-password');
     }
-
-
 }

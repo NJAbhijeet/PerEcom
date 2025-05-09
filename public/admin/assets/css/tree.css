@@ -1,0 +1,77 @@
+.Tree-image{
+	width:65px;
+}
+
+.Main-tree{
+	padding-left:440px;
+	padding-bottom:15px;
+}
+	
+.Main-tree2{
+	padding-left:100px;
+	padding-bottom:15px;
+}	
+
+.Main-tree3{
+	margin-left:-80px;
+	padding-bottom:20px;
+	padding-top:20px;
+}
+
+.Main-tree4{
+	margin-left:-80px;
+	padding-bottom:20px;
+	padding-top:20px;
+}
+
+.pt-10{
+	
+	padding-top:20px;
+}
+
+
+
+/**** Mobile View Start ***/
+
+
+@media (min-width: 100px) and (max-width: 991px) {
+.Tree-image{
+	width:55px;
+}
+
+
+
+
+.Main-tree{
+	padding-left:160px;
+	padding-bottom:15px;
+}
+	
+.Main-tree2{
+	padding-left:40px;
+	padding-bottom:15px;
+}	
+
+.Main-tree3{
+	margin-left:-80px;
+	padding-bottom:20px;
+	padding-top:20px;
+}
+
+.Main-tree4{
+	margin-left:-5px;
+	padding-bottom:20px;
+	padding-top:20px;
+}
+
+.Main-tree4.Tree-sub{
+	width:120px !important;
+}
+
+.pt-10{
+	
+	padding-top:20px;
+}
+}
+
+/*** Mobiel View End -->

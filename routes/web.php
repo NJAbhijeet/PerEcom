@@ -28,16 +28,20 @@ Route::get('/faq', [AdminHomeController::class, 'faq'])->name('faq');
 Route::get('/myaccount', [AdminHomeController::class, 'myaccount'])->name('myaccount');
 
 Route::get('/login', [AdminHomeController::class, 'login'])->name('login');
+
 Route::get('/register', [AdminHomeController::class, 'register'])->name('register');
+Route::post('/register', [AdminHomeController::class, 'vendorregister'])->name('vendorregister');
+
 
 Route::get('/forget-password', [AdminHomeController::class, 'forget_password'])->name('forget_password');
+
 
 
 
 //ECOMMERCE PART
 
 Route::get('/shop', [AdminHomeController::class, 'shop'])->name('shop');
-Route::get('/shop-detail', [AdminHomeController::class, 'shopdetail'])->name('shopdetail');
+Route::get('/shop-detail/{slug}', [AdminHomeController::class, 'shopdetail'])->name('shopdetail');
 
 Route::get('/testimonials', [AdminHomeController::class, 'testimonials'])->name('testimonials');
 

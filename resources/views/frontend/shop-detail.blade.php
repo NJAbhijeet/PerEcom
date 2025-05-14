@@ -129,7 +129,11 @@
                                 <p>{{ \Illuminate\Support\Str::limit($check, 180) }}</p>
                                 </p>
                                 <p class="mb-3">Category: {{ $product->category->name }}</p>
-                                <h5 class="fw-bold mb-3">₹{{ $product->sp }} / {{ $product->units->name }}</h5>
+
+                                <h5 id="product-price" class="fw-bold mb-3">
+                                    ₹{{ $product->sp }} / {{ $product->units->name }}
+                                </h5>
+
                                 <div class="d-flex mb-4">
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star text-secondary"></i>
@@ -254,43 +258,48 @@
                                     </div>
                                 </div>
                             </div>
-                            <form action="#">
+                            <form action="{{ route('reviewstore') }}" method="post" enctype="multipart/form-data">
+                                @csrf
                                 <h4 class="mb-5 fw-bold">Leave a Reply</h4>
                                 <div class="row g-4">
+                                    <input type="hidden" value="{{ $product->id }}">
                                     <div class="col-lg-6">
                                         <div class="border-bottom rounded">
-                                            <input type="text" class="form-control border-0 me-4"
+                                            <input type="text" class="form-control border-0 me-4" name="name"
                                                 placeholder="Yur Name *">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="border-bottom rounded">
-                                            <input type="email" class="form-control border-0"
+                                            <input type="email" class="form-control border-0" name="email"
                                                 placeholder="Your Email *">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="border-bottom rounded my-4">
-                                            <textarea name="" id="" class="form-control border-0" cols="30" rows="8"
-                                                placeholder="Your Review *" spellcheck="false"></textarea>
+                                            <textarea name="message" id="" class="form-control border-0" cols="30" rows="8"
+                                                placeholder="Your Message *" spellcheck="false"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div class="d-flex justify-content-between py-3 mb-5">
+                                        <div class="d-flex justify-content-between align-items-center py-3 mb-5">
                                             <div class="d-flex align-items-center">
                                                 <p class="mb-0 me-3">Please rate:</p>
-                                                <div class="d-flex align-items-center" style="font-size: 12px;">
-                                                    <i class="fa fa-star text-muted"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
+                                                <div id="starRating" class="d-flex align-items-center"
+                                                    style="font-size: 20px; cursor: pointer;" name="review">
+                                                    <i class="fa fa-star text-muted" data-value="1"></i>
+                                                    <i class="fa fa-star text-muted" data-value="2"></i>
+                                                    <i class="fa fa-star text-muted" data-value="3"></i>
+                                                    <i class="fa fa-star text-muted" data-value="4"></i>
+                                                    <i class="fa fa-star text-muted" data-value="5"></i>
                                                 </div>
                                             </div>
-                                            <a href="#"
+                                            <button id="submitRating"
                                                 class="btn border border-secondary text-primary rounded-pill px-4 py-3">
-                                                Post Comment</a>
+                                                Submit Rating
+                                            </button>
                                         </div>
+
                                     </div>
                                 </div>
                             </form>
@@ -305,26 +314,36 @@
                                     <span id="search-icon-1" class="input-group-text p-3"><i
                                             class="fa fa-search"></i></span>
                                 </div>
-                                
+
+
+
                                 <div class="mb-4">
                                     <h4>Vendors</h4>
                                     <ul class="list-unstyled fruite-categorie">
                                         @foreach ($vendorProducts as $vendorproduct)
                                             <li>
-                                                <label class="d-flex justify-content-between align-items-center fruite-name">
-                                                    <input type="radio" 
-                                                           name="vendor" 
-                                                           value="{{ $vendorproduct->id }}" 
-                                                           onchange="updatePrice()" 
-                                                           {{ $loop->first ? 'checked' : '' }}>
+                                                <label
+                                                    class="d-flex justify-content-between align-items-center fruite-name">
+                                                    <input type="radio" name="vendor"
+                                                        value="{{ $vendorproduct->id }}"
+                                                        data-price="{{ $vendorproduct->vendorproduct_price }}"
+                                                        onchange="updatePrice(this)" {{ $loop->first ? 'checked' : '' }}>
                                                     <span>{{ $vendorproduct->vendor->name }}</span>
                                                     <span>₹{{ $vendorproduct->vendorproduct_price }}</span>
                                                 </label>
                                             </li>
                                         @endforeach
+
+                                        <label class="d-flex justify-content-between align-items-center fruite-name">
+                                            <input type="radio" name="vendor" value="default"
+                                                data-price="{{ $product->sp }}" onchange="updatePrice(this)" checked>
+                                            <span>Default</span>
+                                            <span>₹{{ $product->sp }}</span>
+                                        </label>
                                     </ul>
+
                                 </div>
-                                
+
 
                                 <script>
                                     function updatePrice() {
@@ -341,146 +360,58 @@
                 <h1 class="fw-bold mb-0">Related products</h1>
                 <div class="vesitable">
                     <div class="owl-carousel vegetable-carousel justify-content-center">
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+
+                        @foreach ($relatedproducts as $product)
+                            <div class="border border-primary rounded position-relative vesitable-item">
+                                <div class="vesitable-img">
+                                    <img src="{{ asset('storage/product/' . basename(@$product->single_image->images)) }}"
+                                        class="img-fluid w-100 rounded-top" alt="">
+                                </div>
+                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                                    style="top: 10px; right: 10px;">{{ $product->category->name }}</div>
+                                <div class="p-4 pb-0 rounded-bottom">
+                                    <h4>{{ $product->product_name }}</h4>
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <p class="text-dark fs-5 fw-bold">₹{{ $product->sp }} /
+                                            {{ $product->units->name }}</p>
+                                        <a href="#"
+                                            class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
+                                                class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-1.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-3.png" class="img-fluid w-100 rounded-top bg-light"
-                                    alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Banana</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-4.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Bell Papper</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Potatoes</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Potatoes</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+
                     </div>
                 </div>
             </div>
         </div>
         <!-- Single Product End -->
+
+        <script>
+            function updatePrice(radio) {
+                const price = radio.getAttribute('data-price');
+                const unit = "{{ $product->units->name }}";
+                document.getElementById('product-price').innerHTML = `₹${price} / ${unit}`;
+            }
+        </script>
+        <script>
+            const stars = document.querySelectorAll('#starRating i');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = star.getAttribute('data-value');
+                    // Reset all stars
+                    stars.forEach(s => s.classList.remove('text-warning'));
+                    stars.forEach(s => s.classList.add('text-muted'));
+                    // Highlight selected and previous stars
+                    for (let i = 0; i < rating; i++) {
+                        stars[i].classList.add('text-warning');
+                        stars[i].classList.remove('text-muted');
+                    }
+                    console.log(`Selected Rating: ${rating}`);
+                });
+            });
+
+        </script>
     @endsection

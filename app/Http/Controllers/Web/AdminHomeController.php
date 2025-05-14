@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\VendorProducts;
 use App\Http\Controllers\Controller;
+use App\Models\Review;
 use Illuminate\Support\Facades\Hash;
 
 class AdminHomeController extends Controller
@@ -103,7 +104,24 @@ class AdminHomeController extends Controller
         $vendorProducts = VendorProducts::where('product_id', $product->id)
         ->where('status', 'Active')
         ->get();
-        return view('frontend.shop-detail', compact('product', 'vendorProducts'));
+        $relatedproducts = Product::where('status', 'Active')->get();
+        return view('frontend.shop-detail', compact('product', 'vendorProducts', 'relatedproducts'));
+    }
+
+    public function review(Request $request)
+    {
+        // dd($request->all());
+        $reviews = new Review;
+        $reviews->product_id = $request->product_id;
+        $reviews->name = $request->name;
+        $reviews->email = $request->email;
+        $reviews->review = $request->review;
+        if($reviews->save())
+        {
+            return back()->with('flash_success', 'Sent');
+        }
+
+        
     }
 
     public function cart()

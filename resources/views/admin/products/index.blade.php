@@ -33,6 +33,7 @@
                                         <th>Sl No:</th>
                                         <th>Category Name</th>
                                         <th>Product Name</th>
+                                        <th>Product Weight</th>
                                         <th>Description</th>
                                         <th>Image</th>
                                         <th>MRP</th>
@@ -47,6 +48,7 @@
                                             <td> {{ $key + 1 }} </td>
                                             <td> {{ @$product->category->name }}</td>
                                             <td> {{ @$product->product_name }}</td>
+                                            <td> {{ @$product->units->name }}</td>
                                             <td> {!! @$product->description !!}</td>
                                           
                                             <td><img src="{{ asset('storage/product/' . $product->single_image->images) }}"

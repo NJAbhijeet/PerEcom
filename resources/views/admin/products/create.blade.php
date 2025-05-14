@@ -53,6 +53,8 @@
                                             @endif
                                         </div>
 
+                                        <button type="submit" class="btn btn-primary">Create Product</button>
+
 
                                         <div class="form-group mt-2">
                                             <label for="product_name">Product Name</label>
@@ -184,15 +186,15 @@
         });
     </script>
 
-<script>
-    document.querySelector('input[name="mrp"]').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9.]/g, ''); // allows numbers and dot
-    });
-</script>
+    <script>
+        document.querySelector('input[name="mrp"]').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9.]/g, ''); // allows numbers and dot
+        });
+    </script>
 
-<script>
-    document.querySelector('input[name="sp"]').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9.]/g, ''); // allows numbers and dot
-    });
-</script>
+    <script>
+        document.querySelector('input[name="sp"]').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9.]/g, ''); // allows numbers and dot
+        });
+    </script>
 @endsection

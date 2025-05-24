@@ -15,10 +15,10 @@ class AdminHomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::where('status', 'active') ->inRandomOrder()->take(4)->get();
-        $categoryIds = $categories->pluck('id'); 
-        $products = Product::whereIn('category_id', $categoryIds)->get();     
-        return view('frontend.index', compact('categories', 'products'));        
+        $categories = Category::where('status', 'active')->inRandomOrder()->take(4)->get();
+        $categoryIds = $categories->pluck('id');
+        $products = Product::whereIn('category_id', $categoryIds)->get();
+        return view('frontend.index', compact('categories', 'products'));
     }
 
     public function blog()
@@ -85,25 +85,24 @@ class AdminHomeController extends Controller
         }
     }
 
-  
+
 
 
 
     public function shop()
     {
         $categories = Category::where('status', 'active')->get();
-        $categoryIds = $categories->pluck('id'); 
-        $products = Product::whereIn('category_id', $categoryIds)->get();
+        $categoryIds = $categories->pluck('id');
+        $products = Product::whereIn('category_id', $categoryIds)->where('status', 'active')->paginate(10);
         return view('frontend.shop', compact('categories', 'products'));
-        
     }
 
-    public function shopdetail($slug)    
+    public function shopdetail($slug)
     {
         $product = Product::where('slug', $slug)->first();
         $vendorProducts = VendorProducts::where('product_id', $product->id)
-        ->where('status', 'Active')
-        ->get();
+            ->where('status', 'Active')
+            ->get();
         $relatedproducts = Product::where('status', 'Active')->get();
         return view('frontend.shop-detail', compact('product', 'vendorProducts', 'relatedproducts'));
     }
@@ -116,12 +115,21 @@ class AdminHomeController extends Controller
         $reviews->name = $request->name;
         $reviews->email = $request->email;
         $reviews->review = $request->review;
-        if($reviews->save())
-        {
+        $reviews->message = $request->message;
+        if ($reviews->save()) {
             return back()->with('flash_success', 'Sent');
         }
+    }
 
-        
+    public function productbycategory($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+        $products = Product::where('category_id', $category->id)
+            ->where('status', 'Active')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('frontend.products', compact('category', 'products'));
     }
 
     public function cart()

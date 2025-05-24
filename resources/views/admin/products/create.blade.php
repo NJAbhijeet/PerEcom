@@ -53,7 +53,7 @@
                                             @endif
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary">Create Product</button>
+                                
 
 
                                         <div class="form-group mt-2">

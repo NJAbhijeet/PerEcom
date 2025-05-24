@@ -39,7 +39,8 @@
                                                             @csrf
                                                             <button type="submit" class="btn btn-success btn-sm">Approve</button>
                                                         </form>
-                                                    
+                                                    <br>
+                                                    <br>
                                                         <form action="{{ route('vendor.reject', $row->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             <button type="submit" class="btn btn-danger btn-sm">Reject</button>

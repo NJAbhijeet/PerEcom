@@ -43,6 +43,7 @@ Route::get('/forget-password', [AdminHomeController::class, 'forget_password'])-
 Route::get('/shop', [AdminHomeController::class, 'shop'])->name('shop');
 Route::get('/shop-detail/{slug}', [AdminHomeController::class, 'shopdetail'])->name('shopdetail');
 Route::post('/review', [AdminHomeController::class, 'review'])->name('reviewstore');
+ Route::get('/productbycategory/{slug}', [AdminHomeController::class, 'productbycategory'])->name('product-by-category');
 
 Route::get('/testimonials', [AdminHomeController::class, 'testimonials'])->name('testimonials');
 

@@ -106,6 +106,7 @@
         <!-- Single Page Header End -->
 
 
+
         <!-- Single Product Start -->
         <div class="container-fluid py-5 mt-5">
             <div class="container py-5">
@@ -131,8 +132,13 @@
                                 <p class="mb-3">Category: {{ $product->category->name }}</p>
 
                                 <h5 id="product-price" class="fw-bold mb-3">
-                                    ₹{{ $product->sp }} / {{ $product->units->name }}
+                                    ₹{{ $product->sp }} / {{ $product->units->name }} 
                                 </h5>
+                                <div id="vendor-message"
+                                    style="color: red; margin-top: 5px; font-weight: bold; font-size: 12px;"></div>
+
+                                    <br>
+                                    <br>
 
                                 <div class="d-flex mb-4">
                                     <i class="fa fa-star text-secondary"></i>
@@ -141,20 +147,7 @@
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star"></i>
                                 </div>
-                                <div class="input-group quantity mb-5" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                            
                                 <a href="#"
                                     class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
                                         class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
@@ -204,6 +197,7 @@
                                                 </div>
                                             </div>
                                         @endif
+
                                     </div>
                                     <div class="tab-pane" id="nav-mission" role="tabpanel"
                                         aria-labelledby="nav-mission-tab">
@@ -266,19 +260,19 @@
                                     <div class="col-lg-6">
                                         <div class="border-bottom rounded">
                                             <input type="text" class="form-control border-0 me-4" name="name"
-                                                placeholder="Yur Name *">
+                                                placeholder="Yur Name *" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="border-bottom rounded">
                                             <input type="email" class="form-control border-0" name="email"
-                                                placeholder="Your Email *">
+                                                placeholder="Your Email *" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="border-bottom rounded my-4">
                                             <textarea name="message" id="" class="form-control border-0" cols="30" rows="8"
-                                                placeholder="Your Message *" spellcheck="false"></textarea>
+                                                placeholder="Your Message *" spellcheck="false" required></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -287,6 +281,9 @@
                                                 <p class="mb-0 me-3">Please rate:</p>
                                                 <div id="starRating" class="d-flex align-items-center"
                                                     style="font-size: 20px; cursor: pointer;" name="review">
+                                                    <input type="hidden" id="reviewValue" name="review" value="0"
+                                                        required>
+
                                                     <i class="fa fa-star text-muted" data-value="1"></i>
                                                     <i class="fa fa-star text-muted" data-value="2"></i>
                                                     <i class="fa fa-star text-muted" data-value="3"></i>
@@ -316,7 +313,6 @@
                                 </div>
 
 
-
                                 <div class="mb-4">
                                     <h4>Vendors</h4>
                                     <ul class="list-unstyled fruite-categorie">
@@ -327,6 +323,7 @@
                                                     <input type="radio" name="vendor"
                                                         value="{{ $vendorproduct->id }}"
                                                         data-price="{{ $vendorproduct->vendorproduct_price }}"
+                                                        data-unit="{{ $vendorproduct->unit->name ?? $product->units->name }}"
                                                         onchange="updatePrice(this)" {{ $loop->first ? 'checked' : '' }}>
                                                     <span>{{ $vendorproduct->vendor->name }}</span>
                                                     <span>₹{{ $vendorproduct->vendorproduct_price }}</span>
@@ -334,15 +331,20 @@
                                             </li>
                                         @endforeach
 
-                                        <label class="d-flex justify-content-between align-items-center fruite-name">
-                                            <input type="radio" name="vendor" value="default"
-                                                data-price="{{ $product->sp }}" onchange="updatePrice(this)" checked>
-                                            <span>Default</span>
-                                            <span>₹{{ $product->sp }}</span>
-                                        </label>
+                                        <li>
+                                            <label class="d-flex justify-content-between align-items-center fruite-name">
+                                                <input type="radio" name="vendor" value="default"
+                                                    data-price="{{ $product->sp }}"
+                                                    data-unit="{{ $product->units->name }}" onchange="updatePrice(this)"
+                                                    {{ $vendorProducts->isEmpty() ? 'checked' : '' }}>
+                                                <span>Default</span>
+                                                <span>₹{{ $product->sp }}</span>
+                                            </label>
+                                        </li>
                                     </ul>
-
                                 </div>
+
+
 
 
                                 <script>
@@ -364,8 +366,11 @@
                         @foreach ($relatedproducts as $product)
                             <div class="border border-primary rounded position-relative vesitable-item">
                                 <div class="vesitable-img">
-                                    <img src="{{ asset('storage/product/' . basename(@$product->single_image->images)) }}"
-                                        class="img-fluid w-100 rounded-top" alt="">
+                                    <a href="{{ route('shopdetail', $product->slug) }}">
+                                        <img style="width:100px; height:300px"
+                                            src="{{ asset('storage/product/' . basename(@$product->single_image->images)) }}"
+                                            class="img-fluid w-100 rounded-top" alt="">
+                                    </a>
                                 </div>
                                 <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
                                     style="top: 10px; right: 10px;">{{ $product->category->name }}</div>
@@ -389,29 +394,59 @@
         <!-- Single Product End -->
 
         <script>
+            // Update price and unit display on vendor selection
             function updatePrice(radio) {
                 const price = radio.getAttribute('data-price');
-                const unit = "{{ $product->units->name }}";
+                const unit = radio.getAttribute('data-unit');
                 document.getElementById('product-price').innerHTML = `₹${price} / ${unit}`;
+
+                // Vendor message element (make sure this div exists in your HTML)
+                const vendorMessageElement = document.getElementById('vendor-message');
+
+                if (radio.value !== 'default') {
+                    // Get vendor name from sibling span (label children: input, span, span)
+                    const vendorName = radio.parentElement.querySelector('span').textContent.trim();
+                    vendorMessageElement.textContent = `Purchased from ${vendorName}`;
+                    vendorMessageElement.style.display = 'block';
+                } else {
+                    vendorMessageElement.textContent = '';
+                    vendorMessageElement.style.display = 'none';
+                }
             }
-        </script>
-        <script>
-            const stars = document.querySelectorAll('#starRating i');
 
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    const rating = star.getAttribute('data-value');
-                    // Reset all stars
-                    stars.forEach(s => s.classList.remove('text-warning'));
-                    stars.forEach(s => s.classList.add('text-muted'));
-                    // Highlight selected and previous stars
-                    for (let i = 0; i < rating; i++) {
-                        stars[i].classList.add('text-warning');
-                        stars[i].classList.remove('text-muted');
-                    }
-                    console.log(`Selected Rating: ${rating}`);
+            // Initialize when page loads
+            document.addEventListener('DOMContentLoaded', () => {
+                // Handle star rating
+                const stars = document.querySelectorAll('#starRating i');
+                let selectedRating = 0;
+
+                stars.forEach(star => {
+                    star.addEventListener('click', () => {
+                        selectedRating = parseInt(star.getAttribute('data-value'));
+
+                        // Reset stars
+                        stars.forEach(s => {
+                            s.classList.remove('text-warning');
+                            s.classList.add('text-muted');
+                        });
+
+                        // Highlight selected stars
+                        for (let i = 0; i < selectedRating; i++) {
+                            stars[i].classList.remove('text-muted');
+                            stars[i].classList.add('text-warning');
+                        }
+
+                        // Store rating
+                        document.getElementById('reviewValue').value = selectedRating;
+                        console.log("Selected rating:", selectedRating);
+                    });
                 });
-            });
 
+                // Trigger initial price and vendor message display update
+                const checkedRadio = document.querySelector('input[name="vendor"]:checked');
+                if (checkedRadio) {
+                    updatePrice(checkedRadio);
+                }
+            });
         </script>
     @endsection

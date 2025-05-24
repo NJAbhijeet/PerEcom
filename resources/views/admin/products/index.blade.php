@@ -49,7 +49,8 @@
                                             <td> {{ @$product->category->name }}</td>
                                             <td> {{ @$product->product_name }}</td>
                                             <td> {{ @$product->units->name }}</td>
-                                            <td> {!! @$product->description !!}</td>
+                                            <td> {!! \Illuminate\Support\Str::words(@$product->description, 100, '...') !!} </td>
+
                                           
                                             <td><img src="{{ asset('storage/product/' . $product->single_image->images) }}"
                                                 alt="" class="img-responsive" width="50%" /></td>

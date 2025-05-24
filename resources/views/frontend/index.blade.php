@@ -240,8 +240,12 @@
                                                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                         <h4>{{ $product->product_name }}</h4>
                                                         <div class="d-flex justify-content-between flex-lg-wrap">
-                                                            <p class="text-dark fs-5 fw-bold mb-0">
+
+                                                            @if ($product->category_id = 'fruits')
+                                                                  <p class="text-dark fs-5 fw-bold mb-0">
                                                                 ₹{{ $product->sp }} / {{$product->units->name}}</p>
+                                                            @endif
+                                                          
                                                             <a href="#"
                                                                 class="btn border border-secondary rounded-pill px-3 text-primary">
                                                                 <i class="fa fa-shopping-bag me-2 text-primary"></i>Add to

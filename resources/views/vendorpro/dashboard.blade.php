@@ -155,7 +155,15 @@
         <div class="app-content">
             <section class="section">
                 <!--page-header open-->
-
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body iconfont text-left Dash-card1">
+                            <h6 class="mb-3 Dash-color1"><a href="{{route('vendor-product-index')}}">Vendor Products</a></h6>
+                            <h4 class="mb-1 Dash-color1 text-dark">{{$vendorproducts}} </h4>
+                            <p class="mb-2 text-muted"> </p>
+                        </div>
+                    </div>
+                </div>
 
 
                 <!--end row-->

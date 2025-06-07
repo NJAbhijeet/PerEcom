@@ -58,7 +58,7 @@
                                 class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
                                 style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                         </a>
-                        <a href="#" class="my-auto">
+                        <a href="{{ route('login') }}" class="my-auto">
                             <i class="fas fa-user fa-2x"></i>
                         </a>
                     </div>
@@ -96,12 +96,17 @@
                             <!-- Customer Registration Form -->
                             <div class="tab-pane fade show active" id="customer" role="tabpanel"
                                 aria-labelledby="customer-tab">
-                                <form action="" method="POST">
+                                <form action="{{ route('customerregister') }}" method="POST">
                                     @csrf
                                     <!-- Email Field -->
                                     <div class="mb-4">
                                         <input type="name" class="w-100 form-control py-3"
-                                            placeholder="Enter Your name" name="name" required>
+                                            placeholder="Enter Your name" name="first_name" required>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <input type="name" class="w-100 form-control py-3"
+                                            placeholder="Enter Your name" name="last_name" required>
                                     </div>
 
 
@@ -112,7 +117,9 @@
 
                                     <div class="mb-4">
                                         <input type="phone" class="w-100 form-control py-3"
-                                            placeholder="Enter Your phone" name="phone" required>
+                                            placeholder="Enter Your phone" name="phone" maxlength="10"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id=""
+                                            required>
                                     </div>
 
                                     <div class="mb-4">
@@ -155,8 +162,10 @@
                                     </div>
 
                                     <div class="mb-4">
-                                        <input type="phone" class="w-100 form-control py-3"
-                                            placeholder="Enter Your phone" name="phone" required>
+                                        <input type="text" class="w-100 form-control py-3"
+                                            placeholder="Enter Your phone" name="phone" maxlength="10"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id=""
+                                            required>
                                     </div>
 
                                     <!-- Vendor Password Field -->

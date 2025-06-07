@@ -64,7 +64,7 @@
                                     class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
                                     style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                             </a>
-                            <a href="#" class="my-auto">
+                            <a href="{{route('register')}}" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                         </div>
@@ -198,72 +198,77 @@
 
 
         <!-- Fruits Shop Start-->
-        <div class="container-fluid fruite py-5">
-            <div class="container py-5">
-                <div class="tab-class text-center">
-                    <div class="row g-4">
-                        <div class="col-lg-4 text-start">
-                            <h1>Our Products</h1>
-                        </div>
-                        @if ($categories)
-                            <div class="col-lg-8 text-end">
-                                <ul class="nav nav-pills d-inline-flex text-center mb-5">
-                                    @foreach ($categories as $key => $category)
-                                        <li class="nav-item">
-                                            <a class="d-flex m-2 py-2 bg-light rounded-pill {{ $key === 0 ? 'active' : '' }}"
-                                                data-bs-toggle="pill" href="#tab-{{ $category->id }}">
-                                                <span class="text-dark"
-                                                    style="width: 130px;">{{ $category->name }}</span>
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
+        @if ($products)
+            <div class="container-fluid fruite py-5">
+                <div class="container py-5">
+                    <div class="tab-class text-center">
+                        <div class="row g-4">
+                            <div class="col-lg-4 text-start">
+                                <h1>Our Products</h1>
                             </div>
-                        @endif
-                    </div>
+                            @if ($categories)
+                                <div class="col-lg-8 text-end">
+                                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                                        @foreach ($categories as $key => $category)
+                                            <li class="nav-item">
+                                                <a class="d-flex m-2 py-2 bg-light rounded-pill {{ $key === 0 ? 'active' : '' }}"
+                                                    data-bs-toggle="pill" href="#tab-{{ $category->id }}">
+                                                    <span class="text-dark"
+                                                        style="width: 130px;">{{ $category->name }}</span>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>
 
-                    <div class="tab-content">
-                        @if ($categories)
-                            @foreach ($categories as $key => $category)
-                                <div id="tab-{{ $category->id }}"
-                                    class="tab-pane fade {{ $key === 0 ? 'show active' : '' }} p-0">
-                                    <div class="row g-4">
-                                        @foreach ($products->where('category_id', $category->id) as $product)
-                                            <div class="col-md-6 col-lg-4 col-xl-3">
-                                                <div class="rounded position-relative fruite-item">
-                                                    <a href="{{route('shopdetail', $product->slug)}}">
-                                                    <div class="fruite-img">
-                                                            <img src="{{ asset('storage/product/' . basename(@$product->single_image->images)) }}"
-                                                                class="img-fluid w-100 rounded-top" alt="">
-                                                    </div>
-                                                    </a>
-                                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                        <h4>{{ $product->product_name }}</h4>
-                                                        <div class="d-flex justify-content-between flex-lg-wrap">
+                        <div class="tab-content">
+                            @if ($categories)
+                                @foreach ($categories as $key => $category)
+                                    <div id="tab-{{ $category->id }}"
+                                        class="tab-pane fade {{ $key === 0 ? 'show active' : '' }} p-0">
+                                        <div class="row g-4">
+                                            @foreach ($products->where('category_id', $category->id) as $product)
+                                                <div class="col-md-6 col-lg-4 col-xl-3">
+                                                    <div class="rounded position-relative fruite-item">
+                                                        <a href="{{ route('shopdetail', $product->slug) }}">
+                                                            <div class="fruite-img">
+                                                                <img src="{{ asset('storage/product/' . basename(@$product->single_image->images)) }}"
+                                                                    class="img-fluid w-100 rounded-top" alt="">
+                                                            </div>
+                                                        </a>
+                                                        <div
+                                                            class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                            <h4>{{ $product->product_name }}</h4>
+                                                            <div class="d-flex justify-content-between flex-lg-wrap">
 
-                                                            @if ($product->category_id = 'fruits')
-                                                                  <p class="text-dark fs-5 fw-bold mb-0">
-                                                                ₹{{ $product->sp }} / {{$product->units->name}}</p>
-                                                            @endif
-                                                          
-                                                            <a href="#"
-                                                                class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                                <i class="fa fa-shopping-bag me-2 text-primary"></i>Add to
-                                                                cart
-                                                            </a>
+                                                                @if ($product->category_id = 'fruits')
+                                                                    <p class="text-dark fs-5 fw-bold mb-0">
+                                                                        ₹{{ $product->sp }} / {{ $product->units->name }}
+                                                                    </p>
+                                                                @endif
+
+                                                                <a href="#"
+                                                                    class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i>Add
+                                                                    to
+                                                                    cart
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
         <!-- Fruits Shop End-->
 
 

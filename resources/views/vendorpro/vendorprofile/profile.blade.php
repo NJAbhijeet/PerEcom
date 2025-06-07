@@ -9,7 +9,8 @@
 
                 <ol class="breadcrumb">
                     <!-- breadcrumb -->
-                    <li class="breadcrumb-item"><a href="{{route('vendordashboard')}}"><i class="fe fe-home mr-2"></i> Home </a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('vendordashboard') }}"><i class="fe fe-home mr-2"></i> Home
+                        </a></li>
                     <li class="breadcrumb-item active" aria-current="page"> Vendor Profile </li>
                 </ol><!-- End breadcrumb -->
 
@@ -25,8 +26,9 @@
                                 <div class="userprofile social">
                                     <div class="userpic">
 
-                                           <img src="{{asset('storage/vendor/'.$vendors->image)}}"
-                                            alt="" class="userpicimg"> </div>
+                                        <img src="{{ asset('storage/vendor/' . $vendors->image) }}" alt=""
+                                            class="userpicimg">
+                                    </div>
                                     <h3 class="username">{{ $vendors->name }} </h3>
                                     <p>VENDOR</p>
                                     <div class="text-center mb-2">
@@ -54,7 +56,6 @@
                             <p><b>Name :</b>{{ $vendors->name }} </p>
                             <p><b>Email :</b> {{ $vendors->email }}</p>
                             <p><b>Phone :</b> {{ $vendors->phone }} </p>
-                            <p><b>Address : </b>{{ $vendors->address }}</p>
 
                         </div>
 
@@ -72,39 +73,38 @@
                         </div>
                         <div class="card-body">
                             {{--  <form>  --}}
-                                <form enctype="multipart/form-data" class="form-horizontal" method="post"
+                            <form enctype="multipart/form-data" class="form-horizontal" method="post"
                                 action="{{ route('dashboard.vendorprofile') }}">
                                 @csrf
                                 <div class="card-body">
 
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Name</label>
-                                        <input type="text" class="form-control" name="name" value="{{$vendors->name}} " id=""
-                                            placeholder="Enter Name">
+                                        <input type="text" class="form-control" name="name"
+                                            value="{{ $vendors->name }} " id="" placeholder="Enter Name">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" name="email" value="{{$vendors->email}}"  id=""
-                                            placeholder="Enter email">
+                                        <input type="email" class="form-control" name="email"
+                                            value="{{ $vendors->email }}" id="" placeholder="Enter email">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Phone Number</label>
-                                        <input type="number" class="form-control" name="phone" value="{{$vendors->phone}}"  id=""
-                                            placeholder="Enter phone">
+                                        <input type="text" class="form-control" name="phone" maxlength="10"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id=""
+                                            value="{{ $vendors->phone }}" id="" placeholder="Enter phone">
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="">Address</label>
-                                        <textarea type="text" class="form-control" id="" name="address" value="{{$vendors->address}}" placeholder="Enter Address">{{$vendors->address}}</textarea>
-                                    </div>
+
 
 
                                     <div class="form-group">
                                         <label for="exampleInputFile">Profile Pic </label>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" name="image" class="custom-file-input" id="">
+                                                <input type="file" name="image" class="custom-file-input"
+                                                    id="">
                                                 <label class="custom-file-label" for="">Choose file</label>
                                             </div>
                                             {{--  <div class="input-group-append">
@@ -128,7 +128,7 @@
 
                 </div>
 
-               
+
             </div>
             <!--row closed-->
 

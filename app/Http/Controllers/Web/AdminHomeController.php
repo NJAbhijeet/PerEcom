@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Models\User;
+use App\Models\Review;
 use App\Models\Vendor;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\VendorProducts;
 use App\Http\Controllers\Controller;
-use App\Models\Review;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class AdminHomeController extends Controller
 {
@@ -61,10 +65,60 @@ class AdminHomeController extends Controller
         return view('frontend.login');
     }
 
+    public function loginpost(Request $request)
+    {
+        // dd($request->all());
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('web')->attempt($credentials)) {
+            // Authentication passed
+            $intended_url = Session::get("url.intended");
+            session()->put('url.intended', null);
+
+            if (!empty($intended_url) && strpos($intended_url, 'admin') === false) {
+                return redirect($intended_url);
+            } else {
+                return redirect()->route('index');
+            }
+        } else {
+            // Authentication failed
+            return back()->with('flash_error', 'Invalid Credentials');
+        }
+    }
+
+
+
     public function register()
     {
         return view('frontend.register');
     }
+
+    public function register_post(Request $request)
+    {
+        // dd($request->all());       
+        $registers = new User;
+        $registers->first_name = $request->first_name;
+        $registers->last_name = $request->last_name;
+        $registers->email = $request->email;
+        $registers->phone = $request->phone;
+        $registers->gender = $request->gender;
+        $registers->password = Hash::make($request->password);
+        $registers->passwordhint = $request->password;
+        $registers->save();
+        // Mail::send('frontend.mail.register',  [
+        //     'first_name' => $request->first_name,  'last_name' => $request->last_name, 'email' => $request->email, 'phone' => $request->phone, 'passwordhint' => $registers->passwordhint,
+        //     'messagess' => $request->message
+        // ], function ($message) use ($request) {
+        //     // $message->from($request->email);
+        //     $message->subject('USER REGISTERATION');
+        //     $message->to($request->email);
+        // });
+        if ($registers->save()) {
+            return redirect()->route('login')->with('flash_success', 'Thank You For Registering, Please Login');
+        }
+    }
+
+
 
     public function vendorregister(Request $request)
     {

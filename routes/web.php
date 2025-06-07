@@ -28,8 +28,11 @@ Route::get('/faq', [AdminHomeController::class, 'faq'])->name('faq');
 Route::get('/myaccount', [AdminHomeController::class, 'myaccount'])->name('myaccount');
 
 Route::get('/login', [AdminHomeController::class, 'login'])->name('login');
+Route::post('/login', [AdminHomeController::class, 'loginpost']);
 
 Route::get('/register', [AdminHomeController::class, 'register'])->name('register');
+Route::post('/register/post', [AdminHomeController::class, 'register_post'])->name('customerregister');
+
 Route::post('/register', [AdminHomeController::class, 'vendorregister'])->name('vendorregister');
 
 
@@ -43,7 +46,7 @@ Route::get('/forget-password', [AdminHomeController::class, 'forget_password'])-
 Route::get('/shop', [AdminHomeController::class, 'shop'])->name('shop');
 Route::get('/shop-detail/{slug}', [AdminHomeController::class, 'shopdetail'])->name('shopdetail');
 Route::post('/review', [AdminHomeController::class, 'review'])->name('reviewstore');
- Route::get('/productbycategory/{slug}', [AdminHomeController::class, 'productbycategory'])->name('product-by-category');
+Route::get('/productbycategory/{slug}', [AdminHomeController::class, 'productbycategory'])->name('product-by-category');
 
 Route::get('/testimonials', [AdminHomeController::class, 'testimonials'])->name('testimonials');
 
@@ -54,10 +57,3 @@ Route::get('/wishlist', [AdminHomeController::class, 'wishlist'])->name('wishlis
 
 
 Route::get('/checkout', [AdminHomeController::class, 'checkout'])->name('checkout');
-
-
-
-
-
-
-

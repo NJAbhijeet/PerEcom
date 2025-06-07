@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Vendor;
 
 use Illuminate\Http\Request;
+use App\Models\VendorProducts;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,7 +11,9 @@ class VendorHomeController extends Controller
 {
     public function vendordashboard()
     {
-        return view('vendorpro.dashboard');
+         $vendors = Auth::user()->id;
+         $vendorproducts = VendorProducts::where('vendor_id', $vendors)->count();
+        return view('vendorpro.dashboard', compact('vendorproducts'));
     }
 
     public function vendorsignin()
@@ -60,7 +63,6 @@ class VendorHomeController extends Controller
         $vendors->name = $request->name;
         $vendors->email = $request->email;
         $vendors->phone = $request->phone;
-        $vendors->address = $request->address;
 
 
         if ($request->hasfile('image')) {

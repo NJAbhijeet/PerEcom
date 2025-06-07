@@ -46,7 +46,7 @@
                                             <td> {{ $categories->name }}</td>
 
                                             <td><img src="{{ asset('storage/category/' . $categories->image) }}"
-                                                alt="" class="img-responsive" width="50%" /></td>
+                                                alt="" class="img-responsive" width="100px" /></td>
 
                                             <td>
                                                 @if ($categories->status == 'active')

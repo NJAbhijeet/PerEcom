@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->string('image')->nullable();
+            $table->longText('address')->nullable();
             $table->string('password');
             $table->string('passwordhint')->nullable();
             $table->string('gst')->nullable();

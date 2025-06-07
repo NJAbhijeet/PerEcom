@@ -71,7 +71,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8">
                     <h2 class="text-center mb-4">Login</h2>
-                    <form action="" method="post">
+                    <form action="{{route('login')}}" method="post">
                         @csrf
                         <div class="input-boxes">
                             <div class="mb-4">

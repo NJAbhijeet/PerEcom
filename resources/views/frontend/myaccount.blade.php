@@ -77,27 +77,27 @@
                     <form>
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName"
+                            <input type="text" class="form-control" id="firstName" value="{{@$users->first_name}}"
                                 placeholder="Enter your first name" required>
                         </div>
                         <div class="mb-3">
                             <label for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name"
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" value="{{@$users->last_name}}"
                                 required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" value="{{@$users->email}}" required>
                         </div>
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone</label>
-                            <input type="text" class="form-control" id="phone" placeholder="Enter your Phone Number"
+                            <input type="text" class="form-control" id="phone" placeholder="Enter your Phone Number" value="{{@$users->phone}}"
                                 required>
                         </div>
 
                         <div class="mb-3">
                             <label for="City" class="form-label">City</label>
-                            <input type="text" class="form-control" id="city" placeholder="Enter your city"
+                            <input type="text" class="form-control" id="city" placeholder="Enter your city" value="{{@$users->city}}"
                                 required>
                         </div>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -110,17 +110,17 @@
                     <form>
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName"
+                            <input type="text" class="form-control" id="firstName" value="{{@$users->first_name}}"
                                 placeholder="Enter your first name" required>
                         </div>
                         <div class="mb-3">
                             <label for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name"
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" value="{{@$users->last_name}}"
                                 required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" value="{{@$users->email}}" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
                     </form>
@@ -129,7 +129,8 @@
                 <!-- Change Password Tab -->
                 <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
                     <h4 class="mb-3">Change Password</h4>
-                    <form>
+                    <form action="{{route('changepassword')}}" method="post">
+                        @csrf
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Current Password</label>
                             <input type="password" class="form-control" id="currentPassword"

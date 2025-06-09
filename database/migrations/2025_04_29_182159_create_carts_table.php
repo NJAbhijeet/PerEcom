@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('session_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
-            $table->integer('quantity')->nullable();
-            $table->integer('coupon_id')->nullable();
+            $table->string('quantity')->nullable();
+            $table->string('sp')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -21,11 +21,11 @@
                         <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
                                 class="text-white">Email@Example.com</a></small>
                     </div>
-                    <div class="top-link pe-2">
-                        <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                    </div>
+                   <div class="top-link pe-2">
+                    <a href="{{route('privacy')}}" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
+                    <a href="{{route('terms')}}" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
+                    <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                </div>
                 </div>
             </div>
             <div class="container px-0">
@@ -45,12 +45,23 @@
                             <a href="{{ route('testimonials') }}" class="nav-item nav-link">Testimonial</a>
 
                             <a href="{{ route('contacts') }} " class="nav-item nav-link">Contact</a>
+
+                            @php
+                                $user = Auth::user();
+                            @endphp
+                            @if ($user)   
+                            <a href="{{ route('myaccount') }} " class="nav-item nav-link">My Account</a>
+                            @endif
+
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button
                                 class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
                                 data-bs-toggle="modal" data-bs-target="#searchModal"><i
                                     class="fas fa-search text-primary"></i></button>
+
+
+                                    
                             <a href="{{ route('cart') }}" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <span
@@ -64,7 +75,7 @@
                                     class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
                                     style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                             </a>
-                            <a href="{{route('register')}}" class="my-auto">
+                            <a href="{{ route('register') }}" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                         </div>

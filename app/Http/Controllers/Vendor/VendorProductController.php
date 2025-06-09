@@ -71,5 +71,10 @@ class VendorProductController extends Controller
         return back()->with('flash_success', 'Vendor Product Deleted  Successfully!');
     }
 
+    public function getProductsByCategory($category_id)
+    {
+        $products = Product::where('category_id', $category_id)->get();
 
+        return response()->json($products);
+    }
 }

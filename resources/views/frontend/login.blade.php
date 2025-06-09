@@ -79,8 +79,8 @@
                                     placeholder="Enter Your Email" name="email" required>
                             </div>
                             <div class="mb-4">
-                                <input type="text" class="w-100 form-control py-3"
-                                    placeholder="Enter Your Password" name="Password" required>
+                                <input type="password" class="w-100 form-control py-3"
+                                    placeholder="Enter Your Password" name="password" required>
                             </div>  
                        
                             <button type="submit" class="w-100 form-control py-3" style="background: #81c408; color: white;">Submit</button>

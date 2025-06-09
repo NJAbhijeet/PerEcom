@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Web\AdminHomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\AdminHomeController;
 
 
 //DYNAMIC PART
@@ -25,15 +26,16 @@ Route::get('/blog', [AdminHomeController::class, 'blog'])->name('blog');
 
 Route::get('/faq', [AdminHomeController::class, 'faq'])->name('faq');
 
-Route::get('/myaccount', [AdminHomeController::class, 'myaccount'])->name('myaccount');
 
 Route::get('/login', [AdminHomeController::class, 'login'])->name('login');
-Route::post('/login', [AdminHomeController::class, 'loginpost']);
+Route::post('/login', [AdminHomeController::class, 'login_post']);
 
 Route::get('/register', [AdminHomeController::class, 'register'])->name('register');
 Route::post('/register/post', [AdminHomeController::class, 'register_post'])->name('customerregister');
 
 Route::post('/register', [AdminHomeController::class, 'vendorregister'])->name('vendorregister');
+
+
 
 
 Route::get('/forget-password', [AdminHomeController::class, 'forget_password'])->name('forget_password');
@@ -50,10 +52,22 @@ Route::get('/productbycategory/{slug}', [AdminHomeController::class, 'productbyc
 
 Route::get('/testimonials', [AdminHomeController::class, 'testimonials'])->name('testimonials');
 
-Route::get('/cart', [AdminHomeController::class, 'cart'])->name('cart');
+// Add To Cart //
+    Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+    Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+    Route::post('product-add-to-cart', [CartController::class, 'addToCart_firstprice'])->name('product-add-to-cart');
 
-Route::get('/wishlist', [AdminHomeController::class, 'wishlist'])->name('wishlist');
+Route::group(['middleware' => 'auth:web'], function () {
+    Route::get('/myaccount', [AdminHomeController::class, 'myaccount'])->name('myaccount');
+
+
+       Route::post('/change-password', [AdminHomeController::class, 'changepassword'])->name('changepassword');
+
+    Route::get('/cart', [AdminHomeController::class, 'cart'])->name('cart');
+
+    Route::get('/wishlist', [AdminHomeController::class, 'wishlist'])->name('wishlist');
 
 
 
-Route::get('/checkout', [AdminHomeController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout', [AdminHomeController::class, 'checkout'])->name('checkout');
+});

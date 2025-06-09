@@ -57,7 +57,8 @@ class AdminHomeController extends Controller
 
     public function myaccount()
     {
-        return view('frontend.myaccount');
+        $users = Auth::user();
+        return view('frontend.myaccount', compact('users'));
     }
 
     public function login()
@@ -65,7 +66,7 @@ class AdminHomeController extends Controller
         return view('frontend.login');
     }
 
-    public function loginpost(Request $request)
+    public function login_post(Request $request)
     {
         // dd($request->all());
         $credentials = $request->only('email', 'password');
@@ -87,6 +88,24 @@ class AdminHomeController extends Controller
     }
 
 
+    public function changepassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required',
+            'password_confirmation' => 'required|same:new_password',
+        ]);
+
+        // dd($request->all());
+        $user = Auth::user();
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'The current password is incorrect']);
+        }
+        $user->password = Hash::make($request->new_password);
+        $user->passwordhint = $request->new_password;
+        $user->save();
+        return back()->with('flash_success', 'Your password has been changed.');
+    }
 
     public function register()
     {

@@ -40,7 +40,7 @@
                                         <div class="form-group mt-2">
                                             <label for="Image"> Image</label>
                                             <input type="file" name="image" class="form-control" id="image"
-                                                required>
+                                                >
                                             @if ($errors->has('image'))
                                                 <span class="required">
                                                     <strong>{{ $errors->first('image') }}</strong>

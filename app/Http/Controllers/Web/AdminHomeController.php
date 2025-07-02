@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Models\Cart;
 use App\Models\User;
 use App\Models\Review;
 use App\Models\Vendor;
@@ -212,7 +213,26 @@ class AdminHomeController extends Controller
 
     public function checkout()
     {
-        return view('frontend.checkout');
+
+        $session_id = Session::getId();
+        $user = Auth::user();
+        if ($user) {
+            $cart_counter = Cart::where('user_id', $user->id)->count('id');
+            $carts = Cart::where('user_id', $user->id)->get();
+
+            foreach ($carts as $cart) {
+                $product = Product::find($cart->product->id);
+            }
+            $subtotal_cart = [];
+            $subtotal_gst = [];
+        } else {
+            $cart_counter = Cart::where('session_id', Session::getId())->count('id');
+            $carts = Cart::where('session_id', Session::getId())->get();
+            $subtotal_cart = [];
+            $subtotal_gst = [];
+        }
+
+        return view('frontend.checkout', compact('carts', 'subtotal_cart', 'subtotal_gst', 'user'));
     }
 
     public function testimonials()

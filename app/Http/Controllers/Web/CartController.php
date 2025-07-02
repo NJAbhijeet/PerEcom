@@ -15,22 +15,21 @@ class CartController extends Controller
     public function cart()
     {
         if (Auth::check()) {
-            $carts = Cart::where('user_id', Auth::id())->get();
+            $carts = Cart::where(function ($query) {
+                $query->where('session_id', Session::getId())
+                    ->orWhere('user_id', Auth::id());
+            })->get();
         } else {
             $carts = Cart::where('session_id', Session::getId())->get();
         }
 
-        $subtotal_cart = $carts->reduce(function ($carry, $cart) {
-            return $carry + ($cart->product_price->selling_price * $cart->quantity);
-        }, 0);
-
-        return view('frontend.cart', compact('carts', 'subtotal_cart'));
+        return view('frontend.cart', compact('carts'));
     }
 
 
     public function addToCart(Request $request)
     {
-
+        // dd($request->all());
         // Retrieve the selected product
         $product = Product::find($request->product_id);
 
@@ -38,6 +37,7 @@ class CartController extends Controller
         $cart = Cart::where('session_id', Session::getId())
             ->where('product_id', $request->product_id)
             ->first();
+
 
         if ($cart) {
             // If exists, increment the quantity
@@ -55,5 +55,16 @@ class CartController extends Controller
         $cart->save();
 
         return response()->json(['success' => true, 'cart' => $cart]);
+    }
+
+   public function deleteCartQuantity(Request $request, $id, $session_id)
+    {
+        $cart = Cart::where('session_id', $session_id)->where('id', $id)->first();
+        if ($cart) {
+            $cart->delete();
+            return back()->with('flash_success', 'Cart Updated');
+        } else {
+            abort(404);
+        }
     }
 }

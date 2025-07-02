@@ -28,4 +28,9 @@ class Product extends Model
     {
         return $this->belongsTo(ProductImage::class, 'id', 'product_id');
     }
+
+      public function price()
+    {
+        return $this->belongsTo(Price::class, 'id', 'product_id');
+    }
 }

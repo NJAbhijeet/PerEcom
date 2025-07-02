@@ -21,11 +21,13 @@
                         <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
                                 class="text-white">Email@Example.com</a></small>
                     </div>
-                   <div class="top-link pe-2">
-                    <a href="{{route('privacy')}}" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                    <a href="{{route('terms')}}" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                    <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                </div>
+                    <div class="top-link pe-2">
+                        <a href="{{ route('privacy') }}" class="text-white"><small class="text-white mx-2">Privacy
+                                Policy</small>/</a>
+                        <a href="{{ route('terms') }}" class="text-white"><small class="text-white mx-2">Terms of
+                                Use</small>/</a>
+                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                    </div>
                 </div>
             </div>
             <div class="container px-0">
@@ -127,18 +129,18 @@
                                     @php
                                         $check = html_entity_decode(strip_tags($product->description));
                                     @endphp
-                                <p>{{ \Illuminate\Support\Str::limit($check, 180) }}</p>
+                                <p style="text-align: justify">{{ \Illuminate\Support\Str::limit($check, 180) }}</p>
                                 </p>
                                 <p class="mb-3">Category: {{ $product->category->name }}</p>
 
                                 <h5 id="product-price" class="fw-bold mb-3">
-                                    ₹{{ $product->sp }} / {{ $product->units->name }} 
+                                    ₹{{ $product->sp }} / {{ $product->units->name }}
                                 </h5>
                                 <div id="vendor-message"
                                     style="color: red; margin-top: 5px; font-weight: bold; font-size: 12px;"></div>
 
-                                    <br>
-                                    <br>
+                                <br>
+                                <br>
 
                                 <div class="d-flex mb-4">
                                     <i class="fa fa-star text-secondary"></i>
@@ -147,10 +149,13 @@
                                     <i class="fa fa-star text-secondary"></i>
                                     <i class="fa fa-star"></i>
                                 </div>
-                            
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+
+                                <a href="javascript:void(0);" onclick="addToCart({{ $product->id }});"
+                                    class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                    Add to cart
+                                </a>
+
                             </div>
                             <div class="col-lg-12">
                                 <nav>
@@ -260,7 +265,7 @@
                                     <div class="col-lg-6">
                                         <div class="border-bottom rounded">
                                             <input type="text" class="form-control border-0 me-4" name="name"
-                                                placeholder="Yur Name *" required>
+                                                placeholder="Your Name *" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -406,7 +411,7 @@
                 if (radio.value !== 'default') {
                     // Get vendor name from sibling span (label children: input, span, span)
                     const vendorName = radio.parentElement.querySelector('span').textContent.trim();
-                    vendorMessageElement.textContent = `Purchased from ${vendorName}`;
+                    vendorMessageElement.textContent = `Sold By ${vendorName}`;
                     vendorMessageElement.style.display = 'block';
                 } else {
                     vendorMessageElement.textContent = '';
@@ -448,5 +453,24 @@
                     updatePrice(checkedRadio);
                 }
             });
+        </script>
+        <script>
+            function addToCart(productId) {
+                $.ajax({
+                    url: "{{ route('add-to-cart') }}",
+                    type: "POST",
+                    data: {
+                        product_id: productId,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        // You can show a toast/alert or update cart counter
+                        alert(response.message);
+                    },
+                    error: function(xhr) {
+                        alert('Something went wrong. Please try again.');
+                    }
+                });
+            }
         </script>
     @endsection

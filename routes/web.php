@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\RazerpayController;
 use App\Http\Controllers\Web\AdminHomeController;
 
 
@@ -53,21 +54,21 @@ Route::get('/productbycategory/{slug}', [AdminHomeController::class, 'productbyc
 Route::get('/testimonials', [AdminHomeController::class, 'testimonials'])->name('testimonials');
 
 // Add To Cart //
-    Route::get('/cart', [CartController::class, 'cart'])->name('cart');
-    Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
-    Route::post('product-add-to-cart', [CartController::class, 'addToCart_firstprice'])->name('product-add-to-cart');
+Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('del/{id}/session_id/{session_id}', [CartController::class, 'deleteCartQuantity']);
 
 Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/myaccount', [AdminHomeController::class, 'myaccount'])->name('myaccount');
-
-
-       Route::post('/change-password', [AdminHomeController::class, 'changepassword'])->name('changepassword');
-
-    Route::get('/cart', [AdminHomeController::class, 'cart'])->name('cart');
-
+    Route::post('/change-password', [AdminHomeController::class, 'changepassword'])->name('changepassword');
     Route::get('/wishlist', [AdminHomeController::class, 'wishlist'])->name('wishlist');
-
-
-
     Route::get('/checkout', [AdminHomeController::class, 'checkout'])->name('checkout');
+
+
+    Route::get('/payment/{orderId}', [RazerpayController::class, 'showPaymentForm'])->name('payment.form');
+Route::post('/payment/callback', [RazerpayController::class, 'handlePaymentCallback'])->name('payment.callback');
+Route::get('/payment/success/{orderId}', [RazerpayController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/failed/{orderId}', [RazerpayController::class, 'paymentFailed'])->name('payment.failed');
+
+
 });
